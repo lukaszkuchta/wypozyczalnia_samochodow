@@ -24,10 +24,12 @@ public class Rezerwacja {
     private double kwota;
 
     @OneToOne(mappedBy = "rezerwacja")
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Wypozyczenie wypozyczenie;
 
     @OneToOne(mappedBy = "rezerwacja")
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Zwrot zwrot;
 
