@@ -23,7 +23,7 @@ public class Samochod {
     private Status status;
     private double kwotaZaJedenDzien;
 
-    @OneToMany(mappedBy = "rezerwacja")
+    @OneToMany(mappedBy = "samochod")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Rezerwacja> rezerwacje;

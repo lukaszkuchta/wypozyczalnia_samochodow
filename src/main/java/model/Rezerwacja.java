@@ -23,11 +23,11 @@ public class Rezerwacja {
     private LocalDate dataDo;
     private double kwota;
 
-    @OneToOne(mappedBy = "wypozyczenie")
+    @OneToOne(mappedBy = "rezerwacja")
     @EqualsAndHashCode.Exclude
     private Wypozyczenie wypozyczenie;
 
-    @OneToOne(mappedBy = "zwrot")
+    @OneToOne(mappedBy = "rezerwacja")
     @EqualsAndHashCode.Exclude
     private Zwrot zwrot;
 

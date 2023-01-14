@@ -20,7 +20,7 @@ public class Klient {
     private String email;
     private String adres;
 
-    @OneToMany(mappedBy = "rezerwacja")
+    @OneToMany(mappedBy = "klient")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Rezerwacja> rezerwacje;
