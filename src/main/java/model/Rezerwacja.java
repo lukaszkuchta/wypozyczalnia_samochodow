@@ -3,7 +3,9 @@ package model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 
+import java.time.Duration;
 import java.time.LocalDate;
 
 @Data
@@ -21,6 +23,8 @@ public class Rezerwacja {
 
     private LocalDate dataOd;
     private LocalDate dataDo;
+//    private long roznicaDni = Duration.between(dataOd.atStartOfDay(),dataDo.atStartOfDay()).toDays();
+//    @Formula(value = "(select s.kwotaZaJedenDzien FROM Samochod s * select r.roznicaDni FROM Rezerwacja r")
     private double kwota;
 
     @OneToOne(mappedBy = "rezerwacja")

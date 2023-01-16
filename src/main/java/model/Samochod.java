@@ -1,8 +1,10 @@
 package model;
 
 import jakarta.persistence.*;
+import komenda.KomendaDodajRezerwacje;
 import lombok.*;
 
+import java.time.Duration;
 import java.util.Set;
 
 @Data
@@ -19,8 +21,6 @@ public class Samochod {
     private String model;
     private String rocznik;
     private String kolor;
-    @Enumerated(EnumType.STRING)
-    private Status status;
     private double kwotaZaJedenDzien;
 
     @OneToMany(mappedBy = "samochod")
