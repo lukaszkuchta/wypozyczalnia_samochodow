@@ -5,7 +5,12 @@ import model.Klient;
 import model.Rezerwacja;
 import model.Wypozyczenie;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class KomendaDodajWypozyczenie implements Komenda {
     private DataAccessObject<Wypozyczenie> dao = new DataAccessObject<>();
@@ -24,6 +29,10 @@ public class KomendaDodajWypozyczenie implements Komenda {
         Optional<Rezerwacja> rezerwacjaOptional = daoRezerwacja.find(Rezerwacja.class, idRezerwacja);
         if (rezerwacjaOptional.isEmpty()) {
             System.err.println("Rezerwacja o podanym id nie istnieje");
+            return;
+        }
+        if(rezerwacjaOptional.get().getDataOd().compareTo(LocalDate.now()) > 0){
+            System.err.println("Nie da sie wypozyczyc samochodu przed data wpisana w rezerwacji");
             return;
         }
 

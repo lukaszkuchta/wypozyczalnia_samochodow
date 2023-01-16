@@ -5,8 +5,10 @@ import model.Klient;
 import model.Rezerwacja;
 import model.Samochod;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 
 public class KomendaDodajRezerwacje implements Komenda{
     private DataAccessObject<Rezerwacja> dao = new DataAccessObject<>();
@@ -50,11 +52,22 @@ public class KomendaDodajRezerwacje implements Komenda{
             dataDo = LocalDate.parse(dataDoString);
         } while(!dataDo.isAfter(dataOd));
 
+        long roznicaDni = Duration.between(dataOd.atStartOfDay(),dataDo.atStartOfDay()).toDays();
+
+        double cenaZaJedenDzien = samochodOptional.stream()
+                .mapToDouble(Samochod::getKwotaZaJedenDzien)
+                .sum();
+
+
+
+        double kwota = (roznicaDni+1) * cenaZaJedenDzien;
+
         Rezerwacja rezerwacja = Rezerwacja.builder()
                 .klient(klientOptional.get())
                 .samochod(samochodOptional.get())
                 .dataOd(dataOd)
                 .dataDo(dataDo)
+                .kwota(kwota)
                 .build();
         dao.insert(rezerwacja);
     }
