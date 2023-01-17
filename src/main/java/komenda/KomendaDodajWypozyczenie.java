@@ -35,6 +35,10 @@ public class KomendaDodajWypozyczenie implements Komenda {
             System.err.println("Nie da sie wypozyczyc samochodu przed data wpisana w rezerwacji");
             return;
         }
+        if(rezerwacjaOptional.get().getDataDo().compareTo(LocalDate.now()) < 0){
+            System.err.println("Rezerwacja sie skonczyla");
+            return;
+        }
 
         System.out.println("Podaj uwagi:");
         String uwagi = Komenda.SCANNER.nextLine();

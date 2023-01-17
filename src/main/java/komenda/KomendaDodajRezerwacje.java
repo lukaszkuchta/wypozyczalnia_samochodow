@@ -43,7 +43,7 @@ public class KomendaDodajRezerwacje implements Komenda{
             System.out.println("Podaj od kiedy rezerwacja(yyyy-mm-dd):");
             String dataOdString = Komenda.SCANNER.nextLine();
             dataOd = LocalDate.parse(dataOdString);
-        } while(!dataOd.isAfter(LocalDate.now()));
+        } while(!dataOd.isAfter(LocalDate.now()) && !dataOd.equals(LocalDate.now()));
 
         LocalDate dataDo;
         do {
