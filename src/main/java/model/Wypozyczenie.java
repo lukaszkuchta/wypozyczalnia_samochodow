@@ -22,4 +22,9 @@ public class Wypozyczenie {
     @OneToOne
     @EqualsAndHashCode.Exclude
     private Rezerwacja rezerwacja;
+
+    @OneToOne(mappedBy = "wypozyczenie")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Zwrot zwrot;
 }

@@ -31,11 +31,6 @@ public class Rezerwacja {
     @EqualsAndHashCode.Exclude
     private Wypozyczenie wypozyczenie;
 
-    @OneToOne(mappedBy = "rezerwacja")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Zwrot zwrot;
-
     @ManyToOne
     @EqualsAndHashCode.Exclude
     private Klient klient;

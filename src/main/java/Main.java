@@ -19,7 +19,8 @@ public class Main {
                 new KomendaZnajdzSamochod(),
                 new KomendaZnajdzRezerwacja(),
                 new KomendaZnajdzWypozyczenie(),
-                new KomendaZnajdzZwrot()
+                new KomendaZnajdzZwrot(),
+                new KomendaAktualizujKlient()
         );
 
         String komenda;

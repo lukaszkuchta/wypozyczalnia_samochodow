@@ -18,8 +18,12 @@ public class Zwrot {
     @CreationTimestamp
     private LocalDate dataZwrotu;
     private String uwagi;
+    private double cenaZaWynajem;
 
     @OneToOne
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Rezerwacja rezerwacja;
+    private Wypozyczenie wypozyczenie;
+
+
 }

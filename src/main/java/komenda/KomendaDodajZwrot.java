@@ -5,11 +5,14 @@ import model.Rezerwacja;
 import model.Wypozyczenie;
 import model.Zwrot;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Optional;
 
 public class KomendaDodajZwrot implements Komenda{
     private DataAccessObject<Zwrot> dao = new DataAccessObject<>();
-    private DataAccessObject<Rezerwacja> daoRezerwacja = new DataAccessObject<>();
+    private DataAccessObject<Wypozyczenie> daoWypozyczenie = new DataAccessObject<>();
 
     @Override
     public String getKomenda() {
@@ -18,21 +21,44 @@ public class KomendaDodajZwrot implements Komenda{
 
     @Override
     public void obsluga() {
-        System.out.println("Podaj id rezerwacji:");
-        String idRezerwajaString = Komenda.SCANNER.nextLine();
-        Long idRezerwacja = Long.parseLong(idRezerwajaString);
-        Optional<Rezerwacja> rezerwacjaOptional = daoRezerwacja.find(Rezerwacja.class, idRezerwacja);
-        if (rezerwacjaOptional.isEmpty()) {
-            System.err.println("Rezerwacja o podanym id nie istnieje");
+        System.out.println("Podaj id wypozyczenia:");
+        String idWypozyczenieString = Komenda.SCANNER.nextLine();
+        Long idWypozyczenie = Long.parseLong(idWypozyczenieString);
+        Optional<Wypozyczenie> wypozyczenieOptional = daoWypozyczenie.find(Wypozyczenie.class, idWypozyczenie);
+        if (wypozyczenieOptional.isEmpty()) {
+            System.err.println("Wypozyczenie o podanym id nie istnieje");
             return;
         }
 
         System.out.println("Podaj uwagi:");
         String uwagi = Komenda.SCANNER.nextLine();
 
+        System.out.println("Podaj kare, ktora klient ma zaplacic jesli cos zniszczyl w samochodzie:");
+        String kwotaString = Komenda.SCANNER.nextLine();
+        double kara = Double.parseDouble(kwotaString);
+
+        String przeroczenieDniRezerwacji;
+        double karaZaPrzekroczoneDni = 0;
+        do {
+            System.out.println("Czy klient przekroczyl date rezerwacji?(Tak/Nie):");
+            przeroczenieDniRezerwacji = Komenda.SCANNER.nextLine();
+            if (przeroczenieDniRezerwacji.equalsIgnoreCase("Nie")) {
+                continue;
+            }
+            if (przeroczenieDniRezerwacji.equalsIgnoreCase("Tak")) {
+                LocalDate dataDo = wypozyczenieOptional.get().getRezerwacja().getDataDo();
+                long przekroczenieOIleDni = Period.between(dataDo,LocalDate.now()).getDays();
+                double kwotaZaJedenDzien = wypozyczenieOptional.get().getRezerwacja().getSamochod().getKwotaZaJedenDzien();
+                karaZaPrzekroczoneDni = 2*kwotaZaJedenDzien*przekroczenieOIleDni;
+            }
+        }while(!(przeroczenieDniRezerwacji.equalsIgnoreCase("Nie") || przeroczenieDniRezerwacji.equalsIgnoreCase("Tak")));
+
+        double cenaZaWynajem = wypozyczenieOptional.get().getRezerwacja().getKwota() + kara + karaZaPrzekroczoneDni;
+
         Zwrot zwrot = Zwrot.builder()
                 .uwagi(uwagi)
-                .rezerwacja(rezerwacjaOptional.get())
+                .wypozyczenie(wypozyczenieOptional.get())
+                .cenaZaWynajem(cenaZaWynajem)
                 .build();
         dao.insert(zwrot);
     }
