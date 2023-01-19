@@ -20,7 +20,12 @@ public class Main {
                 new KomendaZnajdzRezerwacja(),
                 new KomendaZnajdzWypozyczenie(),
                 new KomendaZnajdzZwrot(),
-                new KomendaAktualizujKlient()
+                new KomendaAktualizujKlient(),
+                new KomendaUsunKlient(),
+                new KomendaUsunSamochod(),
+                new KomendaUsunRezerwacja(),
+                new KomendaUsunWypozyczenie(),
+                new KomendaUsunZwrot()
         );
 
         String komenda;
