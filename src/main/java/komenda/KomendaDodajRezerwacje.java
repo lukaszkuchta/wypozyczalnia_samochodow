@@ -58,8 +58,6 @@ public class KomendaDodajRezerwacje implements Komenda{
                 .mapToDouble(Samochod::getKwotaZaJedenDzien)
                 .sum();
 
-
-
         double kwota = (roznicaDni+1) * cenaZaJedenDzien;
 
         Rezerwacja rezerwacja = Rezerwacja.builder()

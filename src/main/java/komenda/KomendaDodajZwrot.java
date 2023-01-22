@@ -35,45 +35,23 @@ public class KomendaDodajZwrot implements Komenda{
 
         System.out.println("Podaj kare, ktora klient ma zaplacic jesli cos zniszczyl w samochodzie:");
         String kwotaString = Komenda.SCANNER.nextLine();
-        double kara = Double.parseDouble(kwotaString);
+        double karaZaUszkodzenia = Double.parseDouble(kwotaString);
 
-//        String przeroczenieDniRezerwacji;
-//        double karaZaPrzekroczoneDni = 0;
-//        do {
-//            System.out.println("Czy klient przekroczyl date rezerwacji?(Tak/Nie):");
-//            przeroczenieDniRezerwacji = Komenda.SCANNER.nextLine();
-//            if (przeroczenieDniRezerwacji.equalsIgnoreCase("Nie")) {
-//                continue;
-//            }
-//            if (przeroczenieDniRezerwacji.equalsIgnoreCase("Tak")) {
-//                LocalDate dataDo = wypozyczenieOptional.get().getRezerwacja().getDataDo();
-//                long przekroczenieOIleDni = Period.between(dataDo,LocalDate.now()).getDays();
-//                double kwotaZaJedenDzien = wypozyczenieOptional.get().getRezerwacja().getSamochod().getKwotaZaJedenDzien();
-//                karaZaPrzekroczoneDni = 2*kwotaZaJedenDzien*przekroczenieOIleDni;
-//            }
-//        }while(!(przeroczenieDniRezerwacji.equalsIgnoreCase("Nie") || przeroczenieDniRezerwacji.equalsIgnoreCase("Tak")));
-//
-//        double cenaZaWynajem = wypozyczenieOptional.get().getRezerwacja().getKwota() + kara + karaZaPrzekroczoneDni;
-
-        LocalDate dataOd = wypozyczenieOptional.get().getRezerwacja().getDataOd();
         LocalDate dataDo = wypozyczenieOptional.get().getRezerwacja().getDataDo();
         double kwotaZaJedenDzien = wypozyczenieOptional.get().getRezerwacja().getSamochod().getKwotaZaJedenDzien();
-        double karaZaPrzekroczoneDni = 0;
-        double kwotaZaFizycznePosiadanieSamochodu = 0;
-        long roznicaDniWRezerwacjiIZwrocie = Period.between(dataDo,LocalDate.now()).getDays();
-        long ileKlientDniMialSamochod = Period.between(dataOd,dataDo).getDays();
+        double kwotaPobranaPrzyRezerwacji = wypozyczenieOptional.get().getRezerwacja().getKwota();
+        double karaZaPrzekroczoneDni = kwotaZaJedenDzien*2;
+        double zwrotZaSzybszeOddanieSamochoodu = kwotaZaJedenDzien*0.5;
+        long roznicaDniWRezerwacjiIZwrocie = Math.abs(Period.between(dataDo,LocalDate.now()).getDays());
+        double cenaZaWynajem = 0;
 
         if(dataDo.isAfter(LocalDate.now())){
-            kwotaZaFizycznePosiadanieSamochodu = ileKlientDniMialSamochod*kwotaZaJedenDzien;
-            karaZaPrzekroczoneDni = 2*kwotaZaJedenDzien*roznicaDniWRezerwacjiIZwrocie;
+            cenaZaWynajem = kwotaPobranaPrzyRezerwacji + karaZaUszkodzenia - roznicaDniWRezerwacjiIZwrocie*zwrotZaSzybszeOddanieSamochoodu;
         }else if(dataDo.isBefore(LocalDate.now())){
-            kwotaZaFizycznePosiadanieSamochodu = ileKlientDniMialSamochod*kwotaZaJedenDzien;
-            karaZaPrzekroczoneDni = 0.5*kwotaZaJedenDzien*roznicaDniWRezerwacjiIZwrocie;
+            cenaZaWynajem = kwotaPobranaPrzyRezerwacji + karaZaUszkodzenia + roznicaDniWRezerwacjiIZwrocie*karaZaPrzekroczoneDni;
         }else if(dataDo.equals(LocalDate.now())){
-            kwotaZaFizycznePosiadanieSamochodu = ileKlientDniMialSamochod*kwotaZaJedenDzien;
-            karaZaPrzekroczoneDni = 0;
+            cenaZaWynajem = kwotaPobranaPrzyRezerwacji + karaZaUszkodzenia;
         }
-        double cenaZaWynajem = kwotaZaFizycznePosiadanieSamochodu + kara + karaZaPrzekroczoneDni;
 
         Zwrot zwrot = Zwrot.builder()
                 .uwagi(uwagi)

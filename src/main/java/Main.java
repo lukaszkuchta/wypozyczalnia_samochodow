@@ -21,6 +21,7 @@ public class Main {
                 new KomendaZnajdzWypozyczenie(),
                 new KomendaZnajdzZwrot(),
                 new KomendaAktualizujKlient(),
+                new KomendaAktualizujSamochod(),
                 new KomendaUsunKlient(),
                 new KomendaUsunSamochod(),
                 new KomendaUsunRezerwacja(),
